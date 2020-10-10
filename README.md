@@ -7,6 +7,7 @@ A COVID density tracking web application
 ### Frontend
 
 `cd frontend` enter frontend directory
+
 `npm install` installs dependencies
 
 `cd ..` cd back to root
@@ -14,6 +15,7 @@ A COVID density tracking web application
 ### Backend
 
 `cd backend`
+
 `npm install` installs dependencies
 
 ### Running
@@ -21,9 +23,11 @@ A COVID density tracking web application
 Use two separate terminal windows
 
 `cd frontend`
+
 `npm run start` starts the frontend on localhost:3000
 
 `cd ..`
 
 `cd backend`
+
 `npm run start` starts the backend on localhost:5000
