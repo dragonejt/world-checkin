@@ -1,16 +1,28 @@
 {
-  "name": "backend",
+  "name": "world-checkin",
   "version": "1.0.0",
-  "description": "",
+  "description": "A COVID density tracking web application.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dragonejt/world-checkin.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dragonejt/world-checkin/issues"
+  },
+  "homepage": "https://github.com/dragonejt/world-checkin#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^4.1.1"
+    "helmet": "^4.1.1",
+    "mongoose": "^5.10.9"
   }
 }
