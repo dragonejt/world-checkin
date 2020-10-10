@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import Navi from './components/Navi';
 import Display from './components/Display';
-import Heatmap from './components/Heatmap';
+import DensityMap from './components/Heatmap/Map'
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 import './App.css';
@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Switch>
           <Route path = "/map">
-            <Heatmap />
+            <DensityMap />
           </Route>
           <Route path = "/">
             <Display />
