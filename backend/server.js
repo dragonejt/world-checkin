@@ -27,6 +27,21 @@ app.get('/', (req, res) => {
   res.status(200).end();
 })
 
+app.get('/pop', (req, res) => {
+
+  let zip = req.query.zip;
+  //database call for population
+  let population = 100;
+  const response = {
+    "zip": zip,
+    "population": population
+
+}
+  console.log(reponse);
+  res.send(response);
+  res.status(200).end();
+})
+
 app.listen(port, () => {
     console.log(`Database server is running on port: ${port}`);
 });
