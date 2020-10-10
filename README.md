@@ -1,6 +1,3 @@
-# World Checkin
+# world-checkin
 
-Evan Tung
-Dominick _
-May _
-Bill _
+A COVID density tracking web application.
