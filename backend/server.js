@@ -34,10 +34,10 @@ app.get('/pop', (req, res) => {
   let population = 100;
   const response = {
     "zip": zip,
-    "population": population
+    "pop": population
 
 }
-  console.log(reponse);
+  console.log(response);
   res.send(response);
   res.status(200).end();
 })

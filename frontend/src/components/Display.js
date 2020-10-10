@@ -13,7 +13,7 @@ class Display extends React.Component {
   }
   
   retrievePopulation = async () => {
-    const response = await axios.get('/pop?zip=' + this.state.zipcode);
+    const response = await axios.get('http://localhost:5000/pop?zip=' + this.state.zipcode);
     const pop = response.data.pop;
     console.log(pop);
     this.setState({
@@ -28,6 +28,8 @@ class Display extends React.Component {
     this.setState({
       population: pop,
       isCheckedIn: true
+    }).catch((error) => {
+      console.log(error);
     })
   }
   
