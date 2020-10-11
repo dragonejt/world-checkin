@@ -16,23 +16,19 @@ class Display extends React.Component {
       checkinStat: "not"
     }
     if (Cookies.get("isCheckedIn") === "true") {
-      this.state = {
+      this.setState({
           isCheckedIn: true,
           checkinClass: "btn btn-secondary btn-lg",
           checkoutClass: "btn btn-primary btn-lg",
-          checkinStat: "",
-          zipcode: Cookies.get("zipcode")
-      }
+          checkinStat: ""
+      })
     }
-    else {
-      this.state = {
-        isCheckedIn: false,
-        checkinClass: "btn btn-primary btn-lg",
-        checkoutClass: "btn btn-secondary btn-lg",
-        checkinStat: "not",
+    if (!isNaN(Cookies.get("zipcode"))) {
+      this.setState( {
         zipcode: Cookies.get("zipcode")
-      }
+      })
     }
+    this.retrievePopulation()
     console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn + ", ZIP code is " + this.state.zipcode);
   }
   
@@ -120,9 +116,9 @@ class Display extends React.Component {
 
   componentDidMount() {
     this.retrievePopulation();
-    // window.setInterval(() => {
-    //   this.retrievePopulation()
-    // }, 1000);
+    window.setInterval(() => {
+       this.retrievePopulation()
+     }, 1000);
   }
 
   render() {
