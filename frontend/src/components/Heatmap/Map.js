@@ -79,10 +79,10 @@ class DensityMap extends Component {
     }
 
     retrieveData = () => {
-        fetch('https://localhost:4000/get-data')
-            .then((response) => {
-                return response.json()
-            })
+        return [
+            {'zip': 98102, count: 5},
+            {'zip': 98103, count: 4}
+        ]
     }
 
     display = () => {
@@ -92,7 +92,7 @@ class DensityMap extends Component {
                 <h1 class={'jumbotron'}>Population Densities</h1>
                 <Map google={this.props.google} zoom={10} initialCenter={{lat:40.758701, lng:-111.876183}}>
                     <HeatMap
-                        opacity={.5}
+                        opacity={.75}
                         positions={latlng}
                         radius={50}
                     />
@@ -103,7 +103,6 @@ class DensityMap extends Component {
 
     render() {
         // this.convertZipToLatLng()
-        console.log(latlng)
         return this.display()
     }
 }

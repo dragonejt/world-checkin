@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2b51b1f-c0a9-4ee5-afb2-eda573f92cb1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Heatmap/density.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Heatmap/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Heatmap/Map.js" afterDir="false" />
     </list>
@@ -60,7 +59,7 @@
       <updated>1602348403770</updated>
       <workItem from="1602348405130" duration="48000" />
       <workItem from="1602348493554" duration="14138000" />
-      <workItem from="1602374255627" duration="2448000" />
+      <workItem from="1602374255627" duration="2668000" />
     </task>
     <servers />
   </component>
