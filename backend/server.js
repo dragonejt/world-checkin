@@ -2,87 +2,33 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const PopulationModel = require('./PopulationModel');
+const routes = require('./routes')
 require('dotenv').config({path:'../.env'});
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+//specifies app usage
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
+app.use('/', routes);
 
-
+//creates a connection to the mongodb database
 const uri = process.env.URI_STRING;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}
+mongoose.connect(uri, { 
+  useNewUrlParser: true, 
+  useCreateIndex: true, 
+  useUnifiedTopology: true}
 );
-const connection = mongoose.connection;
-connection.once('open', () => {
+
+//event listener for database connection
+mongoose.connection.once('connected', () => {
   console.log("MongoDB database connection established successfully");
 })
 
-app.get('/', (req, res) => {
-  res.send("hello world!");
-  res.status(200).end();
-})
-
-app.get('/pop', (req, res) => {
-
-  try {
-    let zip = req.query.zip;
-  //database call for population
-    let population = 100;
-    const response = {
-      "zip": zip,
-      "pop": population
-    }
-    res.send(response);
-    res.status(200).end();
-  } catch (error) {
-    console.log(error);
-    res.status(404).end();
-  }
-  
-})
-
-app.post('/checkin', (req, res) => {
-  try {
-
-    let zip = req.query.zip;
-    let population = 101;
-    const response = {
-      "zip": zip,
-      "pop": population
-    }
-    res.send(response)
-    res.status(200).end();
-
-  }
-  catch (error) {
-    console.log(error);
-    res.status(404).end();
-  }
-  
-})
-
-app.post('/checkout', (req, res) => {
-
-  try {
-    let zip = req.query.zip;
-    let population = 100;
-    const response = {
-      "zip": zip,
-      "pop": population
-    }
-    res.send(response)
-    res.status(200).end();
-  } catch (error) {
-    console.log(error);
-    res.status(404).end();
-  }
-
-  
-})
-
+//tells the server to listen on specified port
 app.listen(port, () => {
     console.log(`Database server is running on port: ${port}`);
 });

@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Jumbotron, Button} from 'react-bootstrap';
 import Cookies from 'js-cookie';
 
+//if there is no zipcode, the state of zipcode gets set to undefined meaning the component doesnt mount and it asks the server for an undefined zip code
 class Display extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,8 @@ class Display extends React.Component {
     try {
       
       const response = await axios.get('http://localhost:5000/pop?zip=' + this.state.zipcode);
-      const pop = response.data.pop;
+      console.log(response.data);
+      const pop = response.data.population;
       console.log(pop);
       this.setState({
         population: pop,
@@ -60,7 +62,8 @@ class Display extends React.Component {
       if (this.state.isCheckedIn === false) {
         console.log(this.state.zipcode);
         const response = await axios.post('http://localhost:5000/checkin?zip=' + this.state.zipcode);
-        const pop = response.data.pop;
+        const pop = response.data.population;
+        console.log(pop);
         this.setState({
           population: pop,
           isCheckedIn: true,
@@ -86,7 +89,7 @@ class Display extends React.Component {
       if (this.state.isCheckedIn === true) {
               console.log(this.state.zipcode);
               const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode);
-              const pop = response.data.pop;
+              const pop = response.data.population;
               this.setState({
                 population: pop,
                 isCheckedIn: false,
@@ -117,9 +120,9 @@ class Display extends React.Component {
 
   componentDidMount() {
     this.retrievePopulation();
-    window.setInterval(() => {
-      this.retrievePopulation()
-    }, 1000);
+    // window.setInterval(() => {
+    //   this.retrievePopulation()
+    // }, 1000);
   }
 
   render() {
