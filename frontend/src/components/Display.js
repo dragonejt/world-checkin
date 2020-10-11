@@ -137,7 +137,7 @@ class Display extends React.Component {
               <span className="mx-3"></span>
               <button type="button" className={this.state.checkoutClass}  onClick={this.checkout}>Check-out</button>
             </p>
-            <p>You are {this.state.checkinStat} checked in! Displayed ZIP code may not change if you are checked in.</p>
+            <p>You are {this.state.checkinStat} checked in! If you are checked in, you must check out before you can change your ZIP Code.</p>
         </Jumbotron>
     </div>
   }
