@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Map, HeatMap, InfoWindow, Marker, GoogleApiWrapper} from "google-maps-react";
 import key from "./api_key"
-import latlng from './density'
+// import latlng from './density'
 
 const testData = {
     gradient: [
@@ -64,13 +64,11 @@ class DensityMap extends Component {
                     })
                     .then((json) => {
                         const latlng = json['results'][0]['geometry']['location']
-                        //console.log(latlng)
                         for(let idx = 0; idx < count; idx++){
                             data.push(latlng)
                         }
-                        //console.log(this.state.heatmap_data)
                         this.setState({
-                            heatmap_data: testData.zip
+                            heatmap_data: data
                         })
                     })
             }
@@ -86,14 +84,15 @@ class DensityMap extends Component {
     }
 
     display = () => {
+        this.convertZipToLatLng()
         console.log(this.state.heatmap_data)
         return (
             <div>
                 <h1 class={'jumbotron'}>Population Densities</h1>
-                <Map google={this.props.google} zoom={10} initialCenter={{lat:40.758701, lng:-111.876183}}>
+                <Map google={this.props.google} zoom={4} initialCenter={{lat:40.758701, lng:-111.876183}}>
                     <HeatMap
                         opacity={.75}
-                        positions={latlng}
+                        positions={this.state.heatmap_data}
                         radius={50}
                     />
                 </Map>
