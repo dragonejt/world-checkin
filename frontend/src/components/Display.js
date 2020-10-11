@@ -67,9 +67,9 @@ class Display extends React.Component {
 
   componentDidMount() {
     this.retrievePopulation();
-    /*window.setInterval(() => {
+    window.setInterval(() => {
       this.retrievePopulation()
-    }, 5000); */
+    }, 5000);
   }
 
   render() {
@@ -80,7 +80,7 @@ class Display extends React.Component {
             <hr className="my-4" />
             <p>A population density tracker using metrics that users submit themselves. Enter the ZIP code of your destination and click "Check-in" whenever you leave your house, and click "Check-out" whenever you arrive back at home.</p>
             <div className="form-group">
-              <input type="number" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) =>this.handleChange(e.target.value)} />
+              <input type="text" maxLength = "5" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) =>this.handleChange(e.target.value)} />
             </div>
             <p className="lead">
               <button type="button" className="btn btn-primary btn-lg"  onClick={this.checkin}>Check-in</button>
