@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {Map, HeatMap, InfoWindow, Marker, GoogleApiWrapper} from "google-maps-react";
 import key from "./api_key"
+<<<<<<< Updated upstream
+=======
+import latlng from './density'
+>>>>>>> Stashed changes
 
 const testData = {
     gradient: [
@@ -78,13 +82,17 @@ class DensityMap extends Component {
     }
 
     retrieveData = () => {
-        return [
-            {'zip': 98102, count: 5},
-            {'zip': 98103, count: 4}
-        ]
+        fetch('https://localhost:4000/get-data')
+            .then((response) => {
+                return response.json()
+            })
+            .then((json) => {
+                this.convertZipToLatLng()
+            })
     }
 
     display = () => {
+<<<<<<< Updated upstream
         console.log(this.state.heatmap_data)
         return (
             <div>
@@ -94,6 +102,18 @@ class DensityMap extends Component {
                         opacity={.5}
                         positions={this.state.heatmap_data}
                         radius={20}
+=======
+        // this.convertZipToLatLng()
+        // console.log(this.state.heatmap_data)
+        return (
+            <div>
+                <h1 class={'jumbotron'}>Population Densities</h1>
+                <Map google={this.props.google} zoom={10} initialCenter={{lat:40.758701, lng:-111.876183}}>
+                    <HeatMap
+                        opacity={.75}
+                        positions={latlng}
+                        radius={50}
+>>>>>>> Stashed changes
                     />
                 </Map>
             </div>
