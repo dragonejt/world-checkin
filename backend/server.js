@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const PopulationModel = require('./PopulationModel');
+const routes = require('./routes')
 require('dotenv').config({path:'../.env'});
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(helmet());
 
+app.use('/', routes);
 
 const uri = process.env.URI_STRING;
 mongoose.connect(uri, { 
@@ -22,143 +24,6 @@ mongoose.connect(uri, {
 
 mongoose.connection.once('connected', () => {
   console.log("MongoDB database connection established successfully");
-})
-
-
-
-app.get('/', (req, res) => {
-  res.send("hello world!");
-  res.status(200).end();
-})
-
-app.get('/pop', (req, res) => {
-  
-  
-
-  try {
-    
-  //database call for population
-    let zip = req.query.zip;
-    PopulationModel.find({zipCode: zip}).then((data) => {
-
-      const response = data[0];
-      res.send(response);
-      res.status(200).end();
-
-    }).catch((error) => {
-      console.error("There was an error");
-      res.status(404).end();
-    })
-
-  } catch (error) {
-    console.error(error);
-    res.status(404).end();
-  }
-  
-})
-
-app.post('/checkin', (req, res) => {
-  try {
-
-    let zip = req.query.zip;
-
-    PopulationModel.find({zipCode: zip}).then((data) => {
-
-      let response = data[0];
-      //if the query returns a result
-      if (response) {
-        //increments population by one
-        response.population += 1;
-
-        //creates a new document based on the upadted data
-        const updateZip = new PopulationModel(response);
-        //adds updates the document in the mongo db
-        updateZip.save((error) => {
-          //if there's an error send 404
-          if (error) {
-            console.error(error);
-            res.status(404).end();
-          }
-          //else send response and 200 
-          else {
-            res.send(response);
-            res.status(200).end();
-          }
-        });
-      }
-      //if the query returns nothing
-      else {
-        //set response to queried zip and default population of 1
-        response = {
-          zipCode: zip,
-          population: 1
-        };
-        //create a new document
-        const newZip = new PopulationModel(response);
-
-        //add the new document to the database
-        newZip.save((error) => {
-          //if error send 404
-          if (error) {
-            console.error(error);
-            res.status(404).end();
-          }
-          //else send response and 200
-          else {
-            res.send(response);
-            res.status(200).end();
-          }
-        })
-      }
-
-    }).catch((error) => {
-      console.error(error);
-      res.status(404).end();
-    })
-
-  }
-  catch (error) {
-    console.error(error);
-    res.status(404).end();
-  }
-  
-})
-
-app.post('/checkout', (req, res) => {
-
-  try {
-    let zip = req.query.zip;
-
-    PopulationModel.find({zipCode: zip}).then((data) => {
-      let response = data[0];
-
-      if (response && response.population > 0) {
-        response.population -= 1;
-        //creates a new document based on the upadted data
-        const updateZip = new PopulationModel(response);
-        //adds updates the document in the mongo db
-        updateZip.save((error) => {
-          //if there's an error send 404
-          if (error) {
-            console.error(error);
-            res.status(404).end();
-          }
-          //else send response and 200 
-          else {
-            res.send(response);
-            res.status(200).end();
-          }
-        });
-      }
-      else {
-        console.log("You have encountered a very bizarre error! Congrats! You should probably get a prize but we have no money, buy a lottery ticket instead.");
-        res.status(404).end();
-      }
-    })
-  } catch (error) {
-    console.error(error);
-    res.status(404).end();
-  }
 })
 
 app.listen(port, () => {
