@@ -2,9 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-
-
-require('dotenv').config();
+require('dotenv').config({path:'../.env'});
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,7 +13,7 @@ app.use(helmet());
 
 
 const uri = process.env.URI_STRING;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true }
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true}
 );
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -29,17 +27,60 @@ app.get('/', (req, res) => {
 
 app.get('/pop', (req, res) => {
 
-  let zip = req.query.zip;
+  try {
+    let zip = req.query.zip;
   //database call for population
-  let population = 100;
-  const response = {
-    "zip": zip,
-    "pop": population
+    let population = 100;
+    const response = {
+      "zip": zip,
+      "pop": population
+    }
+    res.send(response);
+    res.status(200).end();
+  } catch (error) {
+    console.log(error);
+    res.status(404).end();
+  }
+  
+})
 
-}
-  console.log(response);
-  res.send(response);
-  res.status(200).end();
+app.post('/checkin', (req, res) => {
+  try {
+
+    let zip = req.query.zip;
+    let population = 101;
+    const response = {
+      "zip": zip,
+      "pop": population
+    }
+    res.send(response)
+    res.status(200).end();
+
+  }
+  catch (error) {
+    console.log(error);
+    res.status(404).end();
+  }
+  
+})
+
+app.post('/checkout', (req, res) => {
+
+  try {
+    let zip = req.query.zip;
+    let population = 100;
+    const response = {
+      "zip": zip,
+      "pop": population
+    }
+    res.send(response)
+    res.status(200).end();
+  } catch (error) {
+    console.log(error);
+    res.status(404).end();
+  }
+
+  
 })
 
 app.listen(port, () => {
