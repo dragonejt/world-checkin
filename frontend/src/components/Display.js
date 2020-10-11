@@ -23,6 +23,15 @@ class Display extends React.Component {
           zipcode: Cookies.get("zipcode")
       }
     }
+    else {
+      this.state = {
+        isCheckedIn: false,
+        checkinClass: "btn btn-primary btn-lg",
+        checkoutClass: "btn btn-secondary btn-lg",
+        checkinStat: "not",
+        zipcode: Cookies.get("zipcode")
+      }
+    }
     console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn + ", ZIP code is " + this.state.zipcode);
   }
   
