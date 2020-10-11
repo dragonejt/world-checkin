@@ -13,30 +13,50 @@ class Display extends React.Component {
   }
   
   retrievePopulation = async () => {
-    const response = await axios.get('/pop?zip=' + this.state.zipcode);
-    const pop = response.data.pop;
-    console.log(pop);
-    this.setState({
-      population: pop
-    })
+
+    //const api = process.env.BACK_END + 'pop?zip=' + this.state.zipcode;
+    //console.log(api);
+    try {
+      
+      const response = await axios.get('http://localhost:5000/pop?zip=' + this.state.zipcode);
+      const pop = response.data.pop;
+      console.log(pop);
+      this.setState({
+        population: pop,
+      })
+    }
+    catch {
+      console.log("There was an error");
+    }
   }
   
   checkin = async () => {
-    console.log(this.state.zipcode);
-    const response = await axios.post('/checkin?zip=' + this.state.zipcode)
-    const pop = response.data.pop;
-    this.setState({
-      population: pop,
-      isCheckedIn: true
-    })
+
+    try {
+      console.log(this.state.zipcode);
+      const response = await axios.post('http://localhost:5000/checkin?zip=' + this.state.zipcode);
+      const pop = response.data.pop;
+      this.setState({
+        population: pop,
+        isCheckedIn: true
+      })
+    }
+    catch {
+      console.log("There was an error");
+    }
   }
   
   checkout = async () => {
-    const response = await axios.post('/checkout?zip=' + this.state.zipcode)
-    const pop = response.data.pop;
-    this.setState({
-      population: pop
-    })
+    try {
+      const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode)
+      const pop = response.data.pop;
+      this.setState({
+        population: pop
+      });
+    }
+    catch {
+      console.log("There was an error");
+    }
   }
   
   handleChange(value) {
