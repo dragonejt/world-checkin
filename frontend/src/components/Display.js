@@ -89,7 +89,7 @@ class Display extends React.Component {
       if (this.state.isCheckedIn === true) {
               console.log(this.state.zipcode);
               const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode);
-              const pop = response.data.pop;
+              const pop = response.data.population;
               this.setState({
                 population: pop,
                 isCheckedIn: false,
