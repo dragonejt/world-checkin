@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const PopulationModel = require('./PopulationModel');
-const e = require('express');
 require('dotenv').config({path:'../.env'});
 
 const app = express();
