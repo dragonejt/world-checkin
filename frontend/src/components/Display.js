@@ -58,7 +58,7 @@ class Display extends React.Component {
           checkoutClass: "btn btn-primary btn-lg",
           checkinStat: ""
         });
-        Cookies.set("isCheckedIn", "true");
+        Cookies.set("isCheckedIn", "true", {sameSite: 'lax'});
         console.log(this.state.population);
       }
       else {
@@ -83,7 +83,7 @@ class Display extends React.Component {
                 checkoutClass: "btn btn-secondary btn-lg",
                 checkinStat: "not"
               });
-              Cookies.set("isCheckedIn", "false");
+              Cookies.set("isCheckedIn", "false", {sameSite: 'lax'});
               console.log(this.state.population);
       }
       else {
