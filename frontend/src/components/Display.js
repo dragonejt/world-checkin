@@ -1,15 +1,28 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Jumbotron, Button} from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
 class Display extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       population : 0,
-      zipcode: 12345,
-      isCheckedIn: false
+      zipcode: 10001,
+      isCheckedIn: false,
+      checkinClass: "btn btn-primary btn-lg",
+      checkoutClass: "btn btn-secondary btn-lg",
+      checkinStat: "not"
     }
+    if (Cookies.get("isCheckedIn") === "true") {
+      this.state = {
+          isCheckedIn: true,
+          checkinClass: "btn btn-secondary btn-lg",
+          checkoutClass: "btn btn-primary btn-lg",
+          checkinStat: ""
+      }
+    }
+    console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn);
   }
   
   retrievePopulation = async () => {
@@ -23,7 +36,8 @@ class Display extends React.Component {
       console.log(pop);
       this.setState({
         population: pop,
-      })
+      });
+      console.log(this.state.population);
     }
     catch {
       console.log("There was an error");
@@ -33,13 +47,23 @@ class Display extends React.Component {
   checkin = async () => {
 
     try {
-      console.log(this.state.zipcode);
-      const response = await axios.post('http://localhost:5000/checkin?zip=' + this.state.zipcode);
-      const pop = response.data.pop;
-      this.setState({
-        population: pop,
-        isCheckedIn: true
-      })
+      if (this.state.isCheckedIn === false) {
+        console.log(this.state.zipcode);
+        const response = await axios.post('http://localhost:5000/checkin?zip=' + this.state.zipcode);
+        const pop = response.data.pop;
+        this.setState({
+          population: pop,
+          isCheckedIn: true,
+          checkinClass: "btn btn-secondary btn-lg",
+          checkoutClass: "btn btn-primary btn-lg",
+          checkinStat: ""
+        });
+        Cookies.set("isCheckedIn", "true");
+        console.log(this.state.population);
+      }
+      else {
+        console.log("Already checked in!")
+      }
     }
     catch {
       console.log("There was an error");
@@ -48,11 +72,23 @@ class Display extends React.Component {
   
   checkout = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode)
-      const pop = response.data.pop;
-      this.setState({
-        population: pop
-      });
+      if (this.state.isCheckedIn === true) {
+              console.log(this.state.zipcode);
+              const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode);
+              const pop = response.data.pop;
+              this.setState({
+                population: pop,
+                isCheckedIn: false,
+                checkinClass: "btn btn-primary btn-lg",
+                checkoutClass: "btn btn-secondary btn-lg",
+                checkinStat: "not"
+              });
+              Cookies.set("isCheckedIn", "false");
+              console.log(this.state.population);
+      }
+      else {
+        console.log("Not checked in!")
+      }
     }
     catch {
       console.log("There was an error");
@@ -69,7 +105,7 @@ class Display extends React.Component {
     this.retrievePopulation();
     window.setInterval(() => {
       this.retrievePopulation()
-    }, 5000);
+    }, 1000);
   }
 
   render() {
@@ -83,10 +119,11 @@ class Display extends React.Component {
               <input type="text" maxLength = "5" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) =>this.handleChange(e.target.value)} />
             </div>
             <p className="lead">
-              <button type="button" className="btn btn-primary btn-lg"  onClick={this.checkin}>Check-in</button>
+              <button type="button" className={this.state.checkinClass}  onClick={this.checkin}>Check-in</button>
               <span className="mx-3"></span>
-              <button type="button" className="btn btn-secondary btn-lg"  onClick={this.checkout}>Check-out</button>
+              <button type="button" className={this.state.checkoutClass}  onClick={this.checkout}>Check-out</button>
             </p>
+            <p>You are {this.state.checkinStat} checked in!</p>
         </Jumbotron>
     </div>
   }
