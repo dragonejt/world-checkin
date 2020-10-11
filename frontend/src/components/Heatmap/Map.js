@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Map, HeatMap, InfoWindow, Marker, GoogleApiWrapper} from "google-maps-react";
 import key from "./api_key"
+import latlng from './density'
 
 const testData = {
     gradient: [
@@ -19,24 +20,24 @@ const testData = {
         'rgba(191, 0, 31, 1)',
         'rgba(255, 0, 0, 1)'
     ],
-    // zip: [
-    //     { lat: 25.782551, lng: -80.445368 },
-    //     { lat: 25.782745, lng: -80.444586 },
-    //     { lat: 25.782842, lng: -80.443688 },
-    //     { lat: 25.782919, lng: -80.442815 },
-    //     { lat: 25.782992, lng: -80.442112 },
-    //     { lat: 25.7831, lng: -80.441461 },
-    //     { lat: 25.783206, lng: -80.440829 },
-    //     { lat: 25.783273, lng: -80.440324 },
-    //     { lat: 25.783316, lng: -80.440023 },
-    //     { lat: 25.783357, lng: -80.439794 },
-    //     { lat: 25.783371, lng: -80.439687 },
-    //     { lat: 25.783368, lng: -80.439666 },
-    //     { lat: 25.783383, lng: -80.439594 },
-    //     { lat: 25.783508, lng: -80.439525 },
-    //     { lat: 25.783842, lng: -80.439591 },
-    //     { lat: 25.784147, lng: -80.439668 }
-    // ]
+    zip: [
+        { lat: 25.782551, lng: -80.445368 },
+        { lat: 25.782745, lng: -80.444586 },
+        { lat: 25.782842, lng: -80.443688 },
+        { lat: 25.782919, lng: -80.442815 },
+        { lat: 25.782992, lng: -80.442112 },
+        { lat: 25.7831, lng: -80.441461 },
+        { lat: 25.783206, lng: -80.440829 },
+        { lat: 25.783273, lng: -80.440324 },
+        { lat: 25.783316, lng: -80.440023 },
+        { lat: 25.783357, lng: -80.439794 },
+        { lat: 25.783371, lng: -80.439687 },
+        { lat: 25.783368, lng: -80.439666 },
+        { lat: 25.783383, lng: -80.439594 },
+        { lat: 25.783508, lng: -80.439525 },
+        { lat: 25.783842, lng: -80.439591 },
+        { lat: 25.784147, lng: -80.439668 }
+    ]
 }
 
 const data = []
@@ -69,7 +70,7 @@ class DensityMap extends Component {
                         }
                         //console.log(this.state.heatmap_data)
                         this.setState({
-                            heatmap_data: data
+                            heatmap_data: testData.zip
                         })
                     })
             }
@@ -78,10 +79,10 @@ class DensityMap extends Component {
     }
 
     retrieveData = () => {
-        return [
-            {'zip': 98102, count: 5},
-            {'zip': 98103, count: 4}
-        ]
+        fetch('https://localhost:4000/get-data')
+            .then((response) => {
+                return response.json()
+            })
     }
 
     display = () => {
@@ -89,11 +90,11 @@ class DensityMap extends Component {
         return (
             <div>
                 <h1 class={'jumbotron'}>Population Densities</h1>
-                <Map google={this.props.google} zoom={10} initialCenter={{lat:47.6600087, lng:-122.3215448}}>
+                <Map google={this.props.google} zoom={10} initialCenter={{lat:40.758701, lng:-111.876183}}>
                     <HeatMap
                         opacity={.5}
-                        positions={this.state.heatmap_data}
-                        radius={20}
+                        positions={latlng}
+                        radius={50}
                     />
                 </Map>
             </div>
@@ -101,7 +102,8 @@ class DensityMap extends Component {
     }
 
     render() {
-        this.convertZipToLatLng()
+        // this.convertZipToLatLng()
+        console.log(latlng)
         return this.display()
     }
 }
