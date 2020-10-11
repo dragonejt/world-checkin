@@ -19,10 +19,11 @@ class Display extends React.Component {
           isCheckedIn: true,
           checkinClass: "btn btn-secondary btn-lg",
           checkoutClass: "btn btn-primary btn-lg",
-          checkinStat: ""
+          checkinStat: "",
+          zipcode: Cookies.get("zipcode")
       }
     }
-    console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn);
+    console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn + ", ZIP code is " + this.state.zipcode);
   }
   
   retrievePopulation = async () => {
@@ -59,6 +60,7 @@ class Display extends React.Component {
           checkinStat: ""
         });
         Cookies.set("isCheckedIn", "true", {sameSite: 'lax'});
+        Cookies.set("zipcode", this.state.zipcode.toString(), {sameSite: 'lax'});
         console.log(this.state.population);
       }
       else {
@@ -84,6 +86,7 @@ class Display extends React.Component {
                 checkinStat: "not"
               });
               Cookies.set("isCheckedIn", "false", {sameSite: 'lax'});
+              Cookies.set("zipcode", this.state.zipcode.toString(), {sameSite: 'lax'});
               console.log(this.state.population);
       }
       else {
@@ -96,9 +99,11 @@ class Display extends React.Component {
   }
   
   handleChange(value) {
-        this.setState({
+        if (this.state.isCheckedIn === false) {
+          this.setState({
             zipcode: value
-        });
+          });
+        }
     }
 
   componentDidMount() {
@@ -123,7 +128,7 @@ class Display extends React.Component {
               <span className="mx-3"></span>
               <button type="button" className={this.state.checkoutClass}  onClick={this.checkout}>Check-out</button>
             </p>
-            <p>You are {this.state.checkinStat} checked in!</p>
+            <p>You are {this.state.checkinStat} checked in! Displayed ZIP code may not change if you are checked in.</p>
         </Jumbotron>
     </div>
   }
