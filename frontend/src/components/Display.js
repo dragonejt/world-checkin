@@ -13,22 +13,30 @@ class Display extends React.Component {
       isCheckedIn: false,
       checkinClass: "btn btn-primary btn-lg",
       checkoutClass: "btn btn-secondary btn-lg",
-      checkinStat: "not"
+      checkinStat: "NOT"
     }
     if (Cookies.get("isCheckedIn") === "true") {
-      this.setState({
+      this.state = {
+          population: 0,
           isCheckedIn: true,
           checkinClass: "btn btn-secondary btn-lg",
           checkoutClass: "btn btn-primary btn-lg",
-          checkinStat: ""
-      })
+          checkinStat: "",
+          zipcode: Cookies.get("zipcode")
+      }
+      console.log(this.state.zipcode);
     }
-    if (!isNaN(Cookies.get("zipcode"))) {
-      this.setState( {
-        zipcode: Cookies.get("zipcode")
-      })
+    if (Cookies.get("isCheckedIn") === "false") {
+      this.state ={
+        zipcode: Cookies.get("zipcode"),
+        population : 0,
+        isCheckedIn: false,
+        checkinClass: "btn btn-primary btn-lg",
+        checkoutClass: "btn btn-secondary btn-lg",
+        checkinStat: "NOT"
+      }
+      console.log(this.state.zipcode);
     }
-    this.retrievePopulation()
     console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn + ", ZIP code is " + this.state.zipcode);
   }
   
@@ -91,7 +99,7 @@ class Display extends React.Component {
                 isCheckedIn: false,
                 checkinClass: "btn btn-primary btn-lg",
                 checkoutClass: "btn btn-secondary btn-lg",
-                checkinStat: "not"
+                checkinStat: "NOT",
               });
               Cookies.set("isCheckedIn", "false", {sameSite: 'lax'});
               Cookies.set("zipcode", this.state.zipcode.toString(), {sameSite: 'lax'});
@@ -127,7 +135,7 @@ class Display extends React.Component {
           <h1 className="display-4">{this.state.population}</h1>
             <p className="lead">people in ZIP code {this.state.zipcode}</p>
             <hr className="my-4" />
-            <p>A population density tracker using metrics that users submit themselves. Enter the ZIP code of your destination and click "Check-in" whenever you leave your house, and click "Check-out" whenever you arrive back at home.</p>
+            <p>A population density tracker as a response to the COVID-19 pandemic using metrics that users submit themselves. Enter the ZIP code of your destination and click "Check-in" whenever you leave your house, and click "Check-out" whenever you arrive back at home.</p>
             <div className="form-group">
               <input type="text" maxLength = "5" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) =>this.handleChange(e.target.value)} />
             </div>
