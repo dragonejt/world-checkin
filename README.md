@@ -1,5 +1,5 @@
 # World Check-in
-
+Crowd sourcing population densities within zip codes to help people to avoid potential COVID hotspots.
 ## Inspiration
 One of our team members wanted to make a website that captured how safe each area is based on COVID-19 cases but we had no reliable (and free) way of gathering real time COVID-19 case data. Another team member suggested create a site that allows users to "check in" to certain zip codes and "check out" when leaving. We wanted a way to create crowd sourced population density for local areas to help people see potential COVID-19 hot spots and avoid them.
 
