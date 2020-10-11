@@ -43,7 +43,6 @@ app.get('/pop', (req, res) => {
     PopulationModel.find({zipCode: zip}).then((data) => {
 
       const response = data[0];
-      console.log(response);
       res.send(response);
       res.status(200).end();
 
@@ -53,7 +52,7 @@ app.get('/pop', (req, res) => {
     })
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(404).end();
   }
   
@@ -83,7 +82,6 @@ app.post('/checkin', (req, res) => {
           }
           //else send response and 200 
           else {
-            console.log("Successfully checked in");
             res.send(response);
             res.status(200).end();
           }
@@ -108,7 +106,6 @@ app.post('/checkin', (req, res) => {
           }
           //else send response and 200
           else {
-            console.log("Successfully checked in");
             res.send(response);
             res.status(200).end();
           }
@@ -122,7 +119,7 @@ app.post('/checkin', (req, res) => {
 
   }
   catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(404).end();
   }
   
@@ -160,7 +157,7 @@ app.post('/checkout', (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(404).end();
   }
 })
