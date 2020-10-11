@@ -53,7 +53,7 @@ app.post('/checkin', (req, res) => {
       "zip": zip,
       "pop": population
     }
-    res.send(response)
+    res.send(response);
     res.status(200).end();
 
   }
@@ -73,8 +73,9 @@ app.post('/checkout', (req, res) => {
       "zip": zip,
       "pop": population
     }
-    res.send(response)
+    res.send(response);
     res.status(200).end();
+    
   } catch (error) {
     console.log(error);
     res.status(404).end();
