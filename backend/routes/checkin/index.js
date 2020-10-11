@@ -2,11 +2,16 @@ const checkin = require('express').Router();
 const PopulationModel = require('../../PopulationModel');
 
 
+/**
+ * @returns sends back an object containing the indexed zipcode: zipCode: 'stirng', and population: int
+ */
 checkin.post('/', (req, res) => {
     try {
-
+        
+        //parses the query from the request
         let zip = req.query.zip;
 
+        //finds a document with matching zip in database
         PopulationModel.find({zipCode: zip}).then((data) => {
 
             let response = data[0];
@@ -63,8 +68,8 @@ checkin.post('/', (req, res) => {
 
     }
     catch (error) {
-    console.error(error);
-    res.status(404).end();
+        console.error(error);
+        res.status(404).end();
     }
     
 })

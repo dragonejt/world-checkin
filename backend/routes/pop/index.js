@@ -6,8 +6,11 @@ pop.get('/', (req, res) => {
 
         //database call for population
         let zip = req.query.zip;
+
+        //finds document with matching zipcode
         PopulationModel.find({zipCode: zip}).then((data) => {
 
+        //returns the oject found
         const response = data[0];
         res.send(response);
         res.status(200).end();

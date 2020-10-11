@@ -6,6 +6,7 @@ checkout.post('/', (req, res) => {
     try {
         let zip = req.query.zip;
 
+        //queries the database for a document with matching zipcode
         PopulationModel.find({zipCode: zip}).then((data) => {
             let response = data[0];
 
