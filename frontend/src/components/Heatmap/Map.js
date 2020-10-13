@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import {Map, HeatMap, InfoWindow, Marker, GoogleApiWrapper} from "google-maps-react";
-import key from "./api_key"
 import latlng from './density'
+require('dotenv').config({path: __dirname + '../../../.env'});
+
+const api_key = process.env.REACT_APP_MAPS_API_KEY
 
 const testData = {
     gradient: [
@@ -58,7 +60,7 @@ class DensityMap extends Component {
         if (!this.done){
             const zip_data = this.retrieveData()
             for(let {zip, count} of zip_data){
-                fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=${key}`)
+                fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${zip}&key=${api_key}`)
                     .then((response) => {
                         return response.json()
                     })
@@ -107,6 +109,6 @@ class DensityMap extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: key,
+    apiKey: api_key,
     libraries: ['visualization']
 })(DensityMap)
