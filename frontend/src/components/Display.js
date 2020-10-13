@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Jumbotron, Button} from 'react-bootstrap';
 import Cookies from 'js-cookie';
+require('dotenv').config({path: __dirname + '../../.env'});
 
 //if there is no zipcode, the state of zipcode gets set to undefined meaning the component doesnt mount and it asks the server for an undefined zip code
 class Display extends React.Component {
@@ -9,7 +10,7 @@ class Display extends React.Component {
     super(props);
     this.state = {
       population : 0,
-      zipcode: 10001,
+      zipcode: Cookies.get("zipcode") || 10001,
       isCheckedIn: false,
       checkinClass: "btn btn-primary btn-lg",
       checkoutClass: "btn btn-secondary btn-lg",
@@ -24,7 +25,6 @@ class Display extends React.Component {
           checkinStat: "",
           zipcode: Cookies.get("zipcode")
       }
-      console.log(this.state.zipcode);
     }
     if (Cookies.get("isCheckedIn") === "false") {
       this.state ={
@@ -35,25 +35,21 @@ class Display extends React.Component {
         checkoutClass: "btn btn-secondary btn-lg",
         checkinStat: "NOT"
       }
-      console.log(this.state.zipcode);
     }
     console.log("Cookies were loaded and isCheckedIn is " + this.state.isCheckedIn + ", ZIP code is " + this.state.zipcode);
   }
   
   retrievePopulation = async () => {
 
-    //const api = process.env.BACK_END + 'pop?zip=' + this.state.zipcode;
-    //console.log(api);
+    let backend = process.env.REACT_APP_BACK_END;
+    
     try {
       
-      const response = await axios.get('http://localhost:5000/pop?zip=' + this.state.zipcode);
-      console.log(response.data);
+      const response = await axios.get(backend + 'pop?zip=' + this.state.zipcode);
       const pop = response.data.population;
-      console.log(pop);
       this.setState({
         population: pop,
       });
-      console.log(this.state.population);
     }
     catch {
       console.log("There was an error");
@@ -61,13 +57,13 @@ class Display extends React.Component {
   }
   
   checkin = async () => {
+    
+    let backend = process.env.REACT_APP_BACK_END;
 
     try {
       if (this.state.isCheckedIn === false) {
-        console.log(this.state.zipcode);
-        const response = await axios.post('http://localhost:5000/checkin?zip=' + this.state.zipcode);
+        const response = await axios.post(backend + 'checkin?zip=' + this.state.zipcode);
         const pop = response.data.population;
-        console.log(pop);
         this.setState({
           population: pop,
           isCheckedIn: true,
@@ -77,7 +73,6 @@ class Display extends React.Component {
         });
         Cookies.set("isCheckedIn", "true", {sameSite: 'lax'});
         Cookies.set("zipcode", this.state.zipcode.toString(), {sameSite: 'lax'});
-        console.log(this.state.population);
       }
       else {
         console.log("Already checked in!")
@@ -89,10 +84,12 @@ class Display extends React.Component {
   }
   
   checkout = async () => {
+
+    let backend = process.env.REACT_APP_BACK_END;
+
     try {
       if (this.state.isCheckedIn === true) {
-              console.log(this.state.zipcode);
-              const response = await axios.post('http://localhost:5000/checkout?zip=' + this.state.zipcode);
+              const response = await axios.post(backend + 'checkout?zip=' + this.state.zipcode);
               const pop = response.data.population;
               this.setState({
                 population: pop,
@@ -103,7 +100,6 @@ class Display extends React.Component {
               });
               Cookies.set("isCheckedIn", "false", {sameSite: 'lax'});
               Cookies.set("zipcode", this.state.zipcode.toString(), {sameSite: 'lax'});
-              console.log(this.state.population);
       }
       else {
         console.log("Not checked in!")
@@ -126,7 +122,7 @@ class Display extends React.Component {
     this.retrievePopulation();
     window.setInterval(() => {
        this.retrievePopulation()
-     }, 1000);
+     }, 5000);
   }
 
   render() {
@@ -137,7 +133,7 @@ class Display extends React.Component {
             <hr className="my-4" />
             <p>A population density tracker as a response to the COVID-19 pandemic using metrics that users submit themselves. Enter the ZIP code of your destination and click "Check-in" whenever you leave your house, and click "Check-out" whenever you arrive back at home.</p>
             <div className="form-group">
-              <input type="text" maxLength = "5" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) =>this.handleChange(e.target.value)} />
+              <input type="text" maxLength = "5" className="form-control" id="zipcode" placeholder="ZIP Code (5 digits)" value = {this.state.new} onChange={(e) => this.handleChange(e.target.value)} />
             </div>
             <p className="lead">
               <button type="button" className={this.state.checkinClass}  onClick={this.checkin}>Check-in</button>
