@@ -1,2 +1,2 @@
-const key = "AIzaSyAzVZ6fQRQqg2N2pMz78KuCPyuanlxnrXg"
+const key = "take a wild guess"
 export default key
